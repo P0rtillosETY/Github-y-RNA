@@ -1,14 +1,5 @@
-"""
-network.py
-~~~~~~~~~~
-¡FUNCIONA!
-
-Un módulo para implementar el algoritmo de aprendizaje de descenso de 
-gradiente estocástico para una red neuronal feedforward. Los gradientes 
-se calculan usando retropropagación (backpropagation). He priorizado 
-que el código sea simple, legible y fácil de modificar. No está optimizado 
-y omite muchas características avanzadas.
-"""
+"""Implementación de una red neuronal "feedforward" que utiliza el algoritmo 
+de Descenso de Gradiente Estocástico (SGD) para el aprendizaje."""
 
 #### Librerías
 # Librería estándar
@@ -20,10 +11,14 @@ import numpy as np
 class Network(object):
 
     def __init__(self, sizes):
-       # "sizes" es la lista que contien el número de neuronas por capa(ejmplo [784,30,10])
+        """
+        El parámetro 'sizes' define la arquitectura de la red (ej. [784, 30, 10]).
+        Se inicializan los sesgos y pesos de forma aleatoria siguiendo una 
+        distribución Gaussiana de media 0 y varianza 1 para romper la simetría.
+        """
         self.num_layers = len(sizes)
         self.sizes = sizes
-        #Sen inicializan los sesgos de forma aletoria para cada capa(excepto la entrada)
+        # Se inicializan los sesgos de forma aletoria para cada capa(excepto la entrada)
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
         # Se inicializan los pesos conectando cad aneurona de una capa con la siguiente, con valores aleatorios
         self.weights = [np.random.randn(y, x)
@@ -108,7 +103,10 @@ class Network(object):
         return (nabla_b, nabla_w)
 
     def evaluate(self, test_data):
-        #Devuelve el número de entradas de prueba para las cuales la red neuronal genera el resultado correcto.
+        """
+        Evalúa el rendimiento de la red. Retorna la suma de predicciones 
+        exitosas comparando la neurona de mayor activación con la etiqueta real.
+        """
         test_results = [(np.argmax(self.feedforward(x)), y)
                         for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
